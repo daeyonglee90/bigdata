@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+<!--/*/ 
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.css">
+<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap-theme.css" >
+<link rel="stylesheet" href="/webjars/bootstrap-social/5.1.1/bootstrap-social.css">
+<link rel="stylesheet" href="/webjars/animate.css/3.5.2/animate.css" >
+
+<script type="text/javascript" src="/webjars/jquery/1.11.1/jquery.js"></script>
+<script type="text/javascript" src="/webjars/bootstrap/3.3.7/js/bootstrap.js"></script>
+<script type="text/javascript" src="/webjars/chartjs/2.6.0/Chart.bundle.js"></script>
+ /*/-->
+<link rel="stylesheet" href="../css/bootstrap.css" data-th-remove="all"> 
+<link rel="stylesheet" href="../css/animate.css" data-th-remove="all">
+<script type="text/javascript">
+	$(function()
+	{
+		
+		// 정규식을 변수에 할당
+		// 정규식을 직접 작성할 줄 알면 참 좋겠지만
+		// 변수 우측에 할당된 정규식은 검색하면 쉽게 찾을 수 있다 
+		// 이 변수들의 활약상을 기대한다
+		// 변수 이름을 're_'로 정한것은 'Reguar Expression'의 머릿글자
+		var re_id = /^[a-z0-9_-]{4,16}$/; // 아이디 검사식
+		var re_pw = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-]|.*[0-9]).{6,24}$/; // 비밀번호 검사식
+		var re_mail = /^([\w\.-]+)@([a-z\d\.-]+)\.([a-z\.]{2,6})$/; // 이메일 검사식
+		var re_url = /^(https?:\/\/)?([a-z\d\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/; // URL 검사식
+		var re_tel = /^[0-9]{8,11}$/; // 전화번호 검사식
+		
+		// 아이디 정규표현식 체크
+		$('#id').change(function(){
+			
+			var id = $('#id').val();
+			
+			if (id != "")
+			{
+				if (re_id.test(id) != true)
+				{
+					$('#warnid').html('영문, 숫자, 언더스코어(_), 하이픈(-)이 포함된 4~16 문자');
+				}
+				else
+				{
+					$('#warnid').html('');	
+				}
+			}
+		});
+
+		// 비밀번호 인풋값이 서로 같은지 확인
+		$('#repw, #pw').change(function(){
+			
+			var pw = $('#pw').val();
+			var repw = $('#repw').val();
+			var text = '';
+			
+			$('#warnpw').html('');
+			
+			if (pw != "" && repw != "")
+			{
+				if (pw != repw)
+				{
+					text += '비밀번호 일치하지 않습니다.^^';
+				}		
+			}
+			
+			if (re_pw.test(pw) != true)
+			{
+				text += '6자~16자 영문대소문자, 숫자, 특수문자 혼합하여야 합니다.^^';
+			}
+			
+			arrText = text.split('^^');
+			
+			$('#warnpw').html(arrText[0]+ "<br>" +arrText[1]);
+		});
+		
+		$('#email').change(function(){
+			
+			var email = $('#email').val();
+			var text = '';
+			
+			$('#warnemail').html('');
+			
+			if (re_mail.test(email) != true)
+			{
+				text = '이메일 형식이 유효하지 않습니다.';
+			}
+			
+			$('#warnemail').html(text);
+		});
+		
+		$('#tel').change(function(){
+			
+			var tel = $('#tel').val();
+			var text = '';
+			
+			var text = '';
+			
+			$('#warntel').html('');
+			
+			if (re_tel.test(tel) != true)
+			{
+				text = '8~11자의 숫자만 입력해주세요.'	
+			}
+			
+			$('#warntel').html(text);
+			
+		});
+		
+	});
+</script> 
+</head>
+<body>
+	<div class="container" style="width:50%">
+		<h1>회원가입</h1>
+		<hr>
+		<div class="col-lg-12 well">
+			<div class="row">
+				<form>
+					<div class="col-sm-12">
+						<div class="row">
+							<div class="col-sm-12 form-group">
+								<input id="id" type="text" placeholder="아이디" class="form-control">
+								<span id="warnid" style="color: red;"></span>
+								<input id="pw" type="password" placeholder="비밀번호" class="form-control">
+								<input id="repw" type="password" placeholder="비밀번호 재확인" class="form-control">
+								<span id="warnpw" style="color: red;"></span>
+							</div>
+							<div class="col-sm-12 form-group">
+								<label>이름</label>
+								<input type="text" placeholder="이름" class="form-control">
+							</div>
+							<div class="col-sm-12 form-group">
+								<label>이메일</label>
+								<input id="email" type="email" placeholder="이메일" class="form-control">
+								<span id="warnemail" style="color: red;"></span>
+							</div>
+							<div class="col-sm-12 form-group">
+								<label>휴대전화</label>
+								<input id="tel" type="text" placeholder="000-0000-0000" class="form-control">
+								<span id="warntel" style="color: red;"></span>
+							</div>
+							<div class="col-sm-12 form-group">
+								<div class="btn-group-justified" data-toggle="buttons">
+									<label class="btn active" style="width:50%; background-color: white;"><input type="radio" name="gender">남</label>
+									<label class="btn" style="width:50%; background-color: white;"><input type="radio" name="gender">여</label>
+								</div>
+							</div>
+							<div class="col-sm-12 form-group form-inline">
+								<label>생일</label>
+								<input type="text" placeholder="년(4자)" maxlength="4">
+								<select id="">
+									<option>월</option>
+									<option>1</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+									<option>6</option>
+									<option>7</option>
+									<option>8</option>
+									<option>9</option>
+									<option>10</option>
+									<option>11</option>
+									<option>12</option>
+								</select>
+								<input type="text" placeholder="일" maxlength="2">
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		
+		<button class="container btn btn-success" style="width:100%;"><span style="font:sans-serif;">가입하기</span></button>
+	</div>
+</body>
+</html>
