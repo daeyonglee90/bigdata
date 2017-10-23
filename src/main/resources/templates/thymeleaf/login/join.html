@@ -18,18 +18,30 @@
 <link rel="stylesheet" href="../css/animate.css" data-th-remove="all">
 <script type="text/javascript">
 	$(function()
-	{
+	{ 
+		
+		$('input[name="gender"]').change(function(){
+			var radioValue = $(this).val();
+			
+			alert(radioValue);
+		});
+		
+		
 		
 		// 정규식을 변수에 할당
 		// 정규식을 직접 작성할 줄 알면 참 좋겠지만
 		// 변수 우측에 할당된 정규식은 검색하면 쉽게 찾을 수 있다 
 		// 이 변수들의 활약상을 기대한다
 		// 변수 이름을 're_'로 정한것은 'Reguar Expression'의 머릿글자
-		var re_id = /^[a-z0-9_-]{4,16}$/; // 아이디 검사식
-		var re_pw = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-]|.*[0-9]).{6,24}$/; // 비밀번호 검사식
+		var re_id   = /^[a-z0-9_-]{4,16}$/; // 아이디 검사식
+		var re_pw   = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-]|.*[0-9]).{6,24}$/; // 비밀번호 검사식
 		var re_mail = /^([\w\.-]+)@([a-z\d\.-]+)\.([a-z\.]{2,6})$/; // 이메일 검사식
-		var re_url = /^(https?:\/\/)?([a-z\d\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/; // URL 검사식
-		var re_tel = /^[0-9]{8,11}$/; // 전화번호 검사식
+		var re_url  = /^(https?:\/\/)?([a-z\d\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/; // URL 검사식
+		var re_tel  = /^[0-9]{8,11}$/; // 전화번호 검사식
+		var re_year = /^[0-9]{4,4}$/; // 생년월일 연도 검사식
+		var re_day  = /^[0-9]{2,2}$/;
+		
+		var flag    = false;
 		
 		// 아이디 정규표현식 체크
 		$('#id').change(function(){
@@ -44,7 +56,7 @@
 				}
 				else
 				{
-					$('#warnid').html('');	
+					$('#warnid').html('');
 				}
 			}
 		});
@@ -73,7 +85,15 @@
 			
 			arrText = text.split('^^');
 			
-			$('#warnpw').html(arrText[0]+ "<br>" +arrText[1]);
+			if (arrText != '')
+			{
+				$('#warnpw').html(arrText[0]+ "<br>" +arrText[1]);
+			}
+			else
+			{
+				$('#warnpw').html('');
+			}
+			
 		});
 		
 		$('#email').change(function(){
@@ -96,17 +116,103 @@
 			var tel = $('#tel').val();
 			var text = '';
 			
-			var text = '';
-			
 			$('#warntel').html('');
 			
 			if (re_tel.test(tel) != true)
 			{
-				text = '8~11자의 숫자만 입력해주세요.'	
+				text = '8~11자의 숫자만 입력해주세요.';	
 			}
 			
 			$('#warntel').html(text);
 			
+		});
+		
+		$('#year').change(function(){
+			
+			var year = $('#year').val();
+			
+			if (re_year.test(year) != true)
+			{
+				alert('4자리의 숫자만 해당됩니다.');
+				$('#year').val('');
+				return;
+			}
+		});
+		
+		$('#day').change(function(){
+			
+			var day = $('#day').val();
+	
+			if (re_day.test(day) != true)
+			{
+				alert('2자리의 숫자만 해당됩니다.');
+				$('#day').val('');
+				return;
+			}
+			
+		});
+		
+		// 가입하기 버튼 클릭 시 처리 ;
+		// 모든 입력형식을 충족하는지 체크 할 것.
+		
+		$('#btnJoin').click(function(){
+			var warnid    = $('#warnid').html();
+			var warnpw    = $('#warnpw').html();
+			var warnemail = $('#warnemail').html();
+			var warntel   = $('#warntel').html();
+			var id        = $('#id').val();
+			var pw        = $('#pw').val();
+			var repw      = $('#repw').val();
+			var email     = $('#email').val();
+			var tel       = $('#tel').val();
+			var gender    = $('input[name="gender"]').val();
+			var year      = $('#year').val();
+			var month     = $('#month').val();
+			var day       = $('#day').val();
+			
+			// 경고메세지 있으면 안된다.
+			if (warnid == '' && warnpw == '' && warnemail == '' && warntel == '')
+			{
+				flag = true;
+			}
+			else
+			{
+				flag = false;
+			}
+			
+			if (id != '' && pw != '' && repw != '' && email != ''
+					&& tel != '' && year != '' && month != "월" && day != '')
+			{
+				flag = true;
+			}
+			else
+			{
+				flag = false;
+			}
+			
+			console.log(id);
+			console.log(pw);
+			console.log(repw);
+			console.log(email);
+			console.log(tel);
+			console.log(gender);
+			console.log(year);
+			console.log(month);
+			console.log(day);
+			
+			alert("flag=" + flag)
+			
+			if (flag == true)
+			{
+				var frmJoin = $('#frmJoin');
+				
+				for (var a in frmJoin)
+				{
+					console.log(a);
+				}
+				
+				frmJoin.submit();
+			}
 		});
 		
 	});
@@ -118,7 +224,7 @@
 		<hr>
 		<div class="col-lg-12 well">
 			<div class="row">
-				<form>
+				<form id="frmJoin" action="#" th:action="@{/login/join}" th:object="${member}" method="post">
 					<div class="col-sm-12">
 						<div class="row">
 							<div class="col-sm-12 form-group">
@@ -139,34 +245,36 @@
 							</div>
 							<div class="col-sm-12 form-group">
 								<label>휴대전화</label>
-								<input id="tel" type="text" placeholder="000-0000-0000" class="form-control">
+								<input id="tel" type="text" placeholder="01012345678" class="form-control">
 								<span id="warntel" style="color: red;"></span>
 							</div>
 							<div class="col-sm-12 form-group">
 								<div class="btn-group-justified" data-toggle="buttons">
-									<label class="btn active" style="width:50%; background-color: white;"><input type="radio" name="gender">남</label>
-									<label class="btn" style="width:50%; background-color: white;"><input type="radio" name="gender">여</label>
+									<label class="btn" style="width:50%; background-color: white; border-radius:5px;"><input type="radio" name="gender" value="M">남</label>
+									<label class="btn" style="width:50%; background-color: white; border-radius:5px;"><input type="radio" name="gender" value="F">여</label>
 								</div>
 							</div>
-							<div class="col-sm-12 form-group form-inline">
+							<div class="col-sm-12 form-group">
 								<label>생일</label>
-								<input type="text" placeholder="년(4자)" maxlength="4">
-								<select id="">
-									<option>월</option>
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-									<option>6</option>
-									<option>7</option>
-									<option>8</option>
-									<option>9</option>
-									<option>10</option>
-									<option>11</option>
-									<option>12</option>
-								</select>
-								<input type="text" placeholder="일" maxlength="2">
+								<div class="form-inline">
+									<input id="year" class="form-control" type="text" placeholder="년(4자)" maxlength="4">
+									<select id="month" class="form-control">
+										<option>월</option>
+										<option>01</option>
+										<option>02</option>
+										<option>03</option>
+										<option>04</option>
+										<option>05</option>
+										<option>06</option>
+										<option>07</option>
+										<option>08</option>
+										<option>09</option>
+										<option>10</option>
+										<option>11</option>
+										<option>12</option>
+									</select>
+									<input id="day" class="form-control"type="text" placeholder="일(2자)" maxlength="2">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -174,7 +282,7 @@
 			</div>
 		</div>
 		
-		<button class="container btn btn-success" style="width:100%;"><span style="font:sans-serif;">가입하기</span></button>
+		<button id="btnJoin" class="container btn btn-success" style="width:100%;"><span style="font:sans-serif;">가입하기</span></button>
 	</div>
 </body>
 </html>
