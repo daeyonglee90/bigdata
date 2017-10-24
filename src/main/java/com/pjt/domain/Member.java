@@ -1,6 +1,7 @@
 package com.pjt.domain;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,7 +23,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.Getter;
 
-
 @Getter
 @Setter
 @ToString
@@ -42,21 +42,17 @@ public class Member {
 	private Long memberNo;
 	
 	private String id;
-	private String password;
+	private String pw;
 	private String name;
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	private String email;
-	private String telephone;
+	private String tel;
 	private String point;
 	@CreationTimestamp
 	private Date create_date;
 	@UpdateTimestamp
 	private Date update_date;
-	
-	 
-	
-	
 }

@@ -154,7 +154,6 @@
 		
 		// 가입하기 버튼 클릭 시 처리 ;
 		// 모든 입력형식을 충족하는지 체크 할 것.
-		
 		$('#btnJoin').click(function(){
 			var warnid    = $('#warnid').html();
 			var warnpw    = $('#warnpw').html();
@@ -190,7 +189,7 @@
 				flag = false;
 			}
 			
-			console.log(id);
+			/* console.log(id);
 			console.log(pw);
 			console.log(repw);
 			console.log(email);
@@ -198,23 +197,25 @@
 			console.log(gender);
 			console.log(year);
 			console.log(month);
-			console.log(day);
+			console.log(day); */
 			
 			alert("flag=" + flag)
 			
 			if (flag == true)
 			{
-				var frmJoin = $('#frmJoin');
 				
+				
+				var frmJoin = $('form#frmJoin');
+				console.log(frmJoin)
 				for (var a in frmJoin)
 				{
 					console.log(a);
 				}
 				
 				frmJoin.submit();
+				alert('interrupt')
 			}
 		});
-		
 	});
 </script> 
 </head>
@@ -224,28 +225,28 @@
 		<hr>
 		<div class="col-lg-12 well">
 			<div class="row">
-				<form id="frmJoin" action="#" th:action="@{/login/join}" th:object="${member}" method="post">
+				<form id="frmJoin" th:action="@{/login/join}" th:object="${memberVO}" method="post">
 					<div class="col-sm-12">
 						<div class="row">
 							<div class="col-sm-12 form-group">
-								<input id="id" type="text" placeholder="아이디" class="form-control">
+								<input id="id" name="id" type="text" placeholder="아이디" class="form-control">
 								<span id="warnid" style="color: red;"></span>
-								<input id="pw" type="password" placeholder="비밀번호" class="form-control">
-								<input id="repw" type="password" placeholder="비밀번호 재확인" class="form-control">
+								<input id="pw" name="pw" type="password" placeholder="비밀번호" class="form-control">
+								<input id="repw" name="repw" type="password" placeholder="비밀번호 재확인" class="form-control">
 								<span id="warnpw" style="color: red;"></span>
 							</div>
 							<div class="col-sm-12 form-group">
 								<label>이름</label>
-								<input type="text" placeholder="이름" class="form-control">
+								<input id="name" type="text" name="name" placeholder="이름" class="form-control">
 							</div>
 							<div class="col-sm-12 form-group">
 								<label>이메일</label>
-								<input id="email" type="email" placeholder="이메일" class="form-control">
+								<input id="email" type="email" name="email" placeholder="이메일" class="form-control">
 								<span id="warnemail" style="color: red;"></span>
 							</div>
 							<div class="col-sm-12 form-group">
 								<label>휴대전화</label>
-								<input id="tel" type="text" placeholder="01012345678" class="form-control">
+								<input id="tel" type="text" name="tel" placeholder="01012345678" class="form-control">
 								<span id="warntel" style="color: red;"></span>
 							</div>
 							<div class="col-sm-12 form-group">
@@ -281,7 +282,6 @@
 				</form>
 			</div>
 		</div>
-		
 		<button id="btnJoin" class="container btn btn-success" style="width:100%;"><span style="font:sans-serif;">가입하기</span></button>
 	</div>
 </body>
