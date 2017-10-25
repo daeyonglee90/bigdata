@@ -189,18 +189,6 @@
 				flag = false;
 			}
 			
-			/* console.log(id);
-			console.log(pw);
-			console.log(repw);
-			console.log(email);
-			console.log(tel);
-			console.log(gender);
-			console.log(year);
-			console.log(month);
-			console.log(day); */
-			
-			alert("flag=" + flag)
-			
 			if (flag == true)
 			{
 				
@@ -213,7 +201,10 @@
 				}
 				
 				frmJoin.submit();
-				alert('interrupt')
+			}
+			else
+			{
+				alert('입력되지 않은 데이터가 존재합니다.');
 			}
 		});
 	});
@@ -258,8 +249,8 @@
 							<div class="col-sm-12 form-group">
 								<label>생일</label>
 								<div class="form-inline">
-									<input id="year" class="form-control" type="text" placeholder="년(4자)" maxlength="4">
-									<select id="month" class="form-control">
+									<input id="year" name="year" class="form-control" type="text" placeholder="년(4자)" maxlength="4">
+									<select id="month" name="month" class="form-control">
 										<option>월</option>
 										<option>01</option>
 										<option>02</option>
@@ -274,7 +265,7 @@
 										<option>11</option>
 										<option>12</option>
 									</select>
-									<input id="day" class="form-control"type="text" placeholder="일(2자)" maxlength="2">
+									<input id="day" name="day" class="form-control"type="text" placeholder="일(2자)" maxlength="2">
 								</div>
 							</div>
 						</div>
