@@ -28,6 +28,21 @@ public class LoginController {
 	@Inject
 	MemberRepository memberRepo;
 	
+	@PostMapping("/login")
+	public String login(@RequestParam("id")String id, @RequestParam("pw")String pw)
+	{
+		
+		log.info("#### /login/login Start ####");
+		
+		log.info("#### id = " + id);
+		log.info("#### pw = " + pw);
+		
+		
+		log.info("#### /login/login End ####");
+		
+		return "thymeleaf/index";
+	}
+	
 	@GetMapping("/join")
 	public String joinGET()
 	{
